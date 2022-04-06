@@ -1,0 +1,37 @@
+<div @todosAnimation class="center">
+    <mat-form-field appearance="fill">
+        <mat-label>ToDo</mat-label>
+        <input
+          #itemInput
+          matInput
+          placeholder="Insira uma tarefa"
+          value=""
+          (keyup.enter)="addItem(itemInput)">
+    </mat-form-field>
+    
+    
+    <div *ngIf="items">
+        <section @slide @fade *ngFor="let item of items" class="row">
+            <div class="todo-item-row">
+                <mat-list>
+                    <div class="todo-flex-container">
+                        <div class="todo-item-container">
+                            <mat-list-item
+                                [@strikethrough]="item.isCompleted ? 'strike' : 'regular'"
+                                (click)="handleItem(item)"
+                                >{{ item.todo }}
+                            </mat-list-item>
+                        </div>
+                        <div class="todo-item-container">
+                            <button mat-mini-fab
+                                color="primary"
+                                (click)="removeItem(item)">
+                                <mat-icon>check</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </mat-list>
+            </div>
+        </section>
+    </div> 
+</div>

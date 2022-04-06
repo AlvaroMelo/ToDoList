@@ -1,0 +1,15 @@
+.todo-item-row {
+    display: table-cell;
+    width: 490px;
+}
+
+.todo-flex-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.todo-item-container {
+    display: flex;
+    justify-content: center;
+}

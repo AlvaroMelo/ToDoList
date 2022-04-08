@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
+import { SnapshotAction } from '@angular/fire/compat/database';
+import { Observable, Subscription } from 'rxjs';
 import { fade, slideFromLeft, strikeThrough, todosAnimation } from '../animations';
+import { Todo } from '../model/todo.interface';
+import { TodosService } from '../services/todos.service';
 
 @Component({
   selector: 'todos',
@@ -8,37 +12,38 @@ import { fade, slideFromLeft, strikeThrough, todosAnimation } from '../animation
   animations: [ slideFromLeft, strikeThrough, fade, todosAnimation ]
 })
 export class TodosComponent {
-  items = [
-    {
-      todo: 'Wash the dishes',
-      isCompleted: false
-    },
-    {
-      todo: 'Call the accountant',
-      isCompleted: false
-    }, 
-    {
-      todo: 'Apply for a car insurance',
-      isCompleted: false
-    }];
+  items$!: Observable<SnapshotAction<Todo>[]>;
+  person!: string;
+  subscription!: Subscription;
+
+  constructor(private todosService: TodosService) { }
 
   addItem(input: HTMLInputElement) {
-    let newValue = {
-      todo: input.value,
-      isCompleted: false
+    let newValue: Todo = {
+        todo: input.value,
+        isCompleted: false
+      };
+
+      this.todosService.addChoreToList(this.person, newValue);
+      input.value = '';
     }
-    this.items.splice(0, 0, newValue);
-    input.value = ''; 
+
+  removeItem(item: string) {
+    this.todosService.removeItem(this.person + '/' + item);
   }
 
-  removeItem(item: any) {
-    let index = this.items.indexOf(item);
-    this.items.splice(index, 1);
+  handleItem(item: string) {
+    this.todosService.updateCompleted(this.person + '/' + item);
   }
 
-  handleItem(item: any) {
-    let index = this.items.indexOf(item);
-    this.items[index].isCompleted = !this.items[index].isCompleted;
+  selectedItem(name: string) {
+    this.person = name;
+    this.items$ = this.todosService.getItems(this.person);
 
   }
+
+  clearList(person: string) {
+    this.todosService.clearList(person);
+  }
+
 }

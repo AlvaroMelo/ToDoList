@@ -1,37 +1,50 @@
 <div @todosAnimation class="center">
+  <mat-form-field appearance="fill">
+    <mat-label>Pick one</mat-label>
+    <mat-select
+      #itemSelect
+      (selectionChange)="selectedItem(itemSelect.triggerValue)">
+      <mat-option value="one">Álvaro</mat-option>
+      <mat-option value="two">Jozenita</mat-option>
+      <mat-option value="three">Júlia</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div *ngIf="person">
     <mat-form-field appearance="fill">
-        <mat-label>ToDo</mat-label>
-        <input
-          #itemInput
-          matInput
-          placeholder="Insira uma tarefa"
-          value=""
-          (keyup.enter)="addItem(itemInput)">
+      <mat-label>ToDo</mat-label>
+      <input
+      #itemInput
+      matInput
+      placeholder="Insira uma tarefa"
+      value=""
+      (keyup.enter)="addItem(itemInput)">
     </mat-form-field>
-    
-    
-    <div *ngIf="items">
-        <section @slide @fade *ngFor="let item of items" class="row">
-            <div class="todo-item-row">
-                <mat-list>
-                    <div class="todo-flex-container">
-                        <div class="todo-item-container">
-                            <mat-list-item
-                                [@strikethrough]="item.isCompleted ? 'strike' : 'regular'"
-                                (click)="handleItem(item)"
-                                >{{ item.todo }}
-                            </mat-list-item>
-                        </div>
-                        <div class="todo-item-container">
-                            <button mat-mini-fab
-                                color="primary"
-                                (click)="removeItem(item)">
-                                <mat-icon>check</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </mat-list>
+  </div>
+
+
+  <div *ngIf="items$ | async as chores">
+    <section *ngFor="let item of chores" class="row">
+      <div class="todo-item-row">
+        <mat-list>
+          <div class="todo-flex-container">
+            <div class="todo-item-container">
+              <mat-list-item
+                [@strikethrough]="item.payload.val()?.isCompleted ? 'strike' : 'regular'"
+                (click)="handleItem(item.key || '')"
+                >{{ item.payload.val()?.todo }}
+              </mat-list-item>
             </div>
-        </section>
-    </div> 
+            <div class="todo-item-container">
+              <button mat-mini-fab
+                color="primary"
+                (click)="removeItem(item.key || '')">
+                <mat-icon>check</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-list>
+      </div>
+    </section>
+  </div> 
 </div>

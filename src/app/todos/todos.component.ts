@@ -14,7 +14,6 @@ import { TodosService } from '../services/todos.service';
 export class TodosComponent {
   items$!: Observable<SnapshotAction<Todo>[]>;
   person!: string;
-  subscription!: Subscription;
 
   constructor(private todosService: TodosService) { }
 
@@ -39,7 +38,6 @@ export class TodosComponent {
   selectedItem(name: string) {
     this.person = name;
     this.items$ = this.todosService.getItems(this.person);
-
   }
 
   clearList(person: string) {

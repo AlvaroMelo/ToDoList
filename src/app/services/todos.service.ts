@@ -10,20 +10,6 @@ export class TodosService {
 
   constructor(private db: AngularFireDatabase) {}
 
-  items: Todo[] = [
-    {
-      todo: 'Wash the dishes',
-      isCompleted: false
-    },
-    {
-      todo: 'Call the accountant',
-      isCompleted: false
-    }, 
-    {
-      todo: 'Apply for a car insurance',
-      isCompleted: false
-    }];
-  
   getItems(person: string): Observable<SnapshotAction<Todo>[]> {
     return this.getList(person).snapshotChanges();
   }

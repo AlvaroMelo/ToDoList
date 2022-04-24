@@ -12,13 +12,13 @@ export let fadeInAnimation = animation([
 });
 
 export let fadeOutAnimation = animation(
-    animate('500ms', style({ opacity: 0}))
+    animate('200ms', style({ opacity: 0}))
 );
 
 export let fade = trigger('fade', [
     transition(':enter', useAnimation(fadeInAnimation, {
         params: {
-            duration: '800ms',
+            duration: '200ms',
         }
     })),
     transition(':leave', useAnimation(fadeOutAnimation)),
@@ -44,7 +44,7 @@ export let todosAnimation = trigger('todosAnimation', [
           animate(1000)
         ]),
         query('@slide',
-          stagger('500ms', animateChild())),  
+          stagger('500ms', animateChild())),
       ])
     ])
   ]);

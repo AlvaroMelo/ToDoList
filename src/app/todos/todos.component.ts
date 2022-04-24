@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SnapshotAction } from '@angular/fire/compat/database';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { fade, slideFromLeft, strikeThrough, todosAnimation } from '../animations';
 import { Todo } from '../model/todo.interface';
 import { TodosService } from '../services/todos.service';
@@ -14,6 +14,8 @@ import { TodosService } from '../services/todos.service';
 export class TodosComponent {
   items$!: Observable<SnapshotAction<Todo>[]>;
   person!: string;
+  isLoading: boolean = false;
+  animate: boolean = false;
 
   constructor(private todosService: TodosService) { }
 

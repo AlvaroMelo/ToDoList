@@ -1,7 +1,7 @@
 <div @todosAnimation class="center">
   <mat-form-field appearance="fill">
     <mat-label>Pick one</mat-label>
-    <mat-select
+    <mat-select id="pick-one"
       #itemSelect
       (selectionChange)="selectedItem(itemSelect.triggerValue)">
       <mat-option value="one">Álvaro</mat-option>
@@ -23,15 +23,17 @@
   </div>
 
 
-  <div *ngIf="items$ | async as chores">
-    <section *ngFor="let item of chores" class="row">
+  <div *ngIf="items$ | async as chores; else loadingTmpl">
+    <section
+      [@fade]="animate"
+      *ngFor="let item of chores" class="row">
       <div class="todo-item-row">
         <mat-list>
           <div class="todo-flex-container">
             <div class="todo-item-container">
               <mat-list-item
-                [@strikethrough]="item.payload.val()?.isCompleted ? 'strike' : 'regular'"
                 (click)="handleItem(item.key || '')"
+                [class.strikethrough]="item.payload.val()?.isCompleted"
                 >{{ item.payload.val()?.todo }}
               </mat-list-item>
             </div>
@@ -46,5 +48,8 @@
         </mat-list>
       </div>
     </section>
-  </div> 
+  </div>
+  <ng-template #loadingTmpl>
+    <mat-progress-spinner *ngIf="person" mode="indeterminate"></mat-progress-spinner>
+  </ng-template>
 </div>

@@ -24,6 +24,10 @@
     width: 490px;
  }
 
+ .strikethrough {
+    text-decoration: line-through;
+ }
+
  @media screen and (max-width: 480px) {
     .mat-form-field{
         width: 100%;

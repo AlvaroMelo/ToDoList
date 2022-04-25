@@ -23,24 +23,24 @@
   </div>
 
 
-  <div *ngIf="items$ | async as chores; else loadingTmpl">
+  <div *ngIf="items$ | async; else loadingTmpl">
     <section
-      [@fade]="animate"
-      *ngFor="let item of chores" class="row">
+      @fade
+      *ngFor="let item of items" class="row">
       <div class="todo-item-row">
         <mat-list>
           <div class="todo-flex-container">
             <div class="todo-item-container">
               <mat-list-item
-                (click)="handleItem(item.key || '')"
-                [class.strikethrough]="item.payload.val()?.isCompleted"
-                >{{ item.payload.val()?.todo }}
+                (click)="handleItem(item.todo)"
+                [class.strikethrough]="item.isCompleted"
+                >{{ item.todo }}
               </mat-list-item>
             </div>
             <div class="todo-item-container">
               <button mat-mini-fab
                 color="primary"
-                (click)="removeItem(item.key || '')">
+                (click)="removeItem(item.todo)">
                 <mat-icon>check</mat-icon>
               </button>
             </div>

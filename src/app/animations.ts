@@ -50,9 +50,3 @@ export let todosAnimation = trigger('todosAnimation', [
       ])
     ])
   ]);
-
-export let strikeThrough = trigger ('strikethrough', [
-    state('strike', style({ textDecoration: 'line-through' })),
-    state('regular', style({ textDecoration: 'none' })),
-    transition('strike <=> regular', animate(200))
-]);

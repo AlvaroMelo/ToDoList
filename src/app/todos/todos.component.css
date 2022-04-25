@@ -24,6 +24,10 @@
     width: 490px;
  }
 
+ mat-list-item {
+     cursor: pointer;
+ }
+
  .strikethrough {
     text-decoration: line-through;
  }

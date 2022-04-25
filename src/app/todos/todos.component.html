@@ -1,4 +1,4 @@
-<div @todosAnimation class="center">
+<div class="center">
   <mat-form-field appearance="fill">
     <mat-label>Pick one</mat-label>
     <mat-select id="pick-one"
@@ -23,8 +23,9 @@
   </div>
 
 
-  <div *ngIf="items$ | async; else loadingTmpl">
+  <div @todosAnimation *ngIf="items$ | async; else loadingTmpl">
     <section
+      @slide
       @fade
       *ngFor="let item of items" class="row">
       <div class="todo-item-row">

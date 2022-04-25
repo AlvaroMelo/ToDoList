@@ -32,19 +32,20 @@ export let slideFromLeft = trigger('slide', [
     ]),
     transition(':leave', [
         style({ backgroundColor: 'red' }),
-        animate('500ms ease-in')
+        animate('200ms ease-in')
     ])
 ]);
 
 export let todosAnimation = trigger('todosAnimation', [
     transition(':enter',[
       group([
-        query('mat-form-field', [
+        query('section', [
           style({ transform: 'translateY(-20px)' }),
-          animate(1000)
-        ]),
+          animate(500)
+        ],
+        { optional: true }),
         query('@slide',
-          stagger('500ms', animateChild()),
+          stagger('200ms', animateChild()),
           { optional: true }),
       ])
     ])

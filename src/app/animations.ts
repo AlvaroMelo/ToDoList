@@ -44,7 +44,8 @@ export let todosAnimation = trigger('todosAnimation', [
           animate(1000)
         ]),
         query('@slide',
-          stagger('500ms', animateChild())),
+          stagger('500ms', animateChild()),
+          { optional: true }),
       ])
     ])
   ]);

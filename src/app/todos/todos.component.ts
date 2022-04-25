@@ -25,7 +25,8 @@ export class TodosComponent {
         isCompleted: false
       };
 
-      this.todosService.addChoreToList(this.person, newValue);
+      if (/\S/g.test(input.value))
+        this.todosService.addChoreToList(this.person, newValue);
       input.value = '';
     }
 

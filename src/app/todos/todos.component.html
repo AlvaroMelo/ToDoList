@@ -2,12 +2,16 @@
   <mat-form-field appearance="fill">
     <mat-label>Pick one</mat-label>
     <mat-select id="pick-one"
+      [formControl]="control"
+      required
       #itemSelect
       (selectionChange)="selectedItem(itemSelect.triggerValue)">
+      <mat-option>--</mat-option>
       <mat-option value="one">Álvaro</mat-option>
       <mat-option value="two">Jozenita</mat-option>
       <mat-option value="three">Júlia</mat-option>
     </mat-select>
+    <mat-error *ngIf="control.hasError('required')">Please choose an anim... Ops... a person</mat-error>
   </mat-form-field>
 
   <div *ngIf="person">
@@ -23,7 +27,7 @@
   </div>
 
 
-  <div @todosAnimation *ngIf="items$ | async; else loadingTmpl">
+  <div @todosAnimation *ngIf="person && (items$ | async); else loadingTmpl">
     <section
       @slide
       @fade

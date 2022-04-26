@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SnapshotAction } from '@angular/fire/compat/database';
+import { FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { fade, slideFromLeft, todosAnimation } from '../animations';
 import { Todo } from '../model/todo.interface';
@@ -24,6 +25,8 @@ export class TodosComponent {
   isPersonChanged: boolean = false;
   isLoading: boolean = false;
   itemsSubscription!: Subscription;
+
+  control = new FormControl('', Validators.required);
 
   constructor(private todosService: TodosService) { }
 
@@ -72,19 +75,22 @@ export class TodosComponent {
 
   selectedItem(name: string) {
     this.person = name;
-    this.items$ = this.todosService.getItems(this.person);
 
-    if (this.itemsSubscription) {
-      this.itemsSubscription.unsubscribe();
-      this.isPersonChanged = true;
-    }
+    if (this.person){
+      this.items$ = this.todosService.getItems(this.person);
 
-    this.itemsSubscription = this.items$.subscribe(listOfItems => {
-      if (this.isPersonChanged) {
-        this.clearItems();
+      if (this.itemsSubscription) {
+        this.itemsSubscription.unsubscribe();
+        this.isPersonChanged = true;
       }
-      listOfItems.forEach(itemList => this.updateItems(itemList));
-    });
+
+      this.itemsSubscription = this.items$.subscribe(listOfItems => {
+        if (this.isPersonChanged) {
+          this.clearItems();
+        }
+        listOfItems.forEach(itemList => this.updateItems(itemList));
+      });
+    }
   }
 
   clearItems() {

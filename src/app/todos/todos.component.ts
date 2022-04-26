@@ -14,7 +14,11 @@ import { TodosService } from '../services/todos.service';
 export class TodosComponent {
   items$!: Observable<SnapshotAction<Todo>[]>;
   items: Todo[] = [];
+
+  // Mapping Todo -> index
   itemsMapIndexes: Map<string, number> = new Map<string, number>();
+
+  // Mapping index -> firebase key
   itemsMapKeys: Map<number, string> = new Map<number, string>();
   person!: string;
   isPersonChanged: boolean = false;
@@ -24,21 +28,39 @@ export class TodosComponent {
   constructor(private todosService: TodosService) { }
 
   addItem(input: HTMLInputElement) {
-    let newValue: Todo = {
-      todo: input.value,
-      isCompleted: false
-    }
-    if (/\S/g.test(input.value))
+    if(!this.itemsMapIndexes.has(input.value) && /\S/g.test(input.value)) {
+      let newValue: Todo = {
+        todo: input.value,
+        isCompleted: false
+      }
       this.todosService.addChoreToList(this.person, newValue);
+    }
     input.value = '';
   }
 
   removeItem(item: string) {
     let index = this.itemsMapIndexes.get(item) as number;
     let key = this.itemsMapKeys.get(index);
-    this.itemsMapKeys.delete(index);
+
+    // Remove item from map of indexes
     this.itemsMapIndexes.delete(item);
+
+    // Update list of indexes and list of firebase keys
+    for (let idx = index + 1; idx < this.itemsMapKeys.size; idx++) {
+      let firebaseKey = this.itemsMapKeys.get(idx) as string;
+      this.itemsMapKeys.set(idx - 1, firebaseKey);
+
+      let todo = this.items[idx].todo;
+      this.itemsMapIndexes.set(todo, idx - 1);
+    }
+
+    // Remove key from deleted item
+    this.itemsMapKeys.delete(this.items.length - 1);
+
+    // Remove item from TODOS array
     this.items.splice(index, 1);
+
+    // Update firebase database
     this.todosService.removeItem(this.person + '/' + key);
   }
 
@@ -61,9 +83,7 @@ export class TodosComponent {
       if (this.isPersonChanged) {
         this.clearItems();
       }
-      listOfItems.forEach(itemList => {
-        this.updateItems(itemList);
-      });
+      listOfItems.forEach(itemList => this.updateItems(itemList));
     });
   }
 
